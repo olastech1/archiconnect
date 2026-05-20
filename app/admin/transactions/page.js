@@ -1,53 +1,29 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import DashboardMobileNav from '@/components/DashboardMobileNav'
 
+export const metadata = { title: 'Transactions | Admin' }
 export default async function AdminTransactionsPage() {
   const session = await auth()
-  if (!session || session.user.role !== 'admin') redirect('/login')
+  if (!session || session.user.role !== 'admin') redirect('/admin/login')
+  const stats = [{ icon:'💰',num:'₦0',label:'Total Revenue' },{ icon:'📤',num:'₦0',label:'Total Payouts' },{ icon:'⏳',num:'₦0',label:'Pending' },{ icon:'📊',num:'0%',label:'Fee Rate' }]
   return (
-    <div className="dashboard-wrapper">
-      <aside className="dash-sidebar">
-        <div style={{ padding: '20px 25px', borderBottom: '1px solid #eee' }}>
-          <div style={{ fontWeight: 800, color: '#0a192f' }}>{session.user.name}</div>
-          <span style={{ fontSize: '0.7rem', background: '#d4af37', color: '#0a192f', padding: '2px 8px', borderRadius: '4px', fontWeight: 800 }}>ADMIN</span>
-        </div>
-        <nav>
-          <Link href="/admin/dashboard" className="dash-nav-item">📊 Overview</Link>
-          <Link href="/admin/users" className="dash-nav-item">👥 Manage Users</Link>
-          <Link href="/admin/verifications" className="dash-nav-item">🛡️ Verifications</Link>
-          <Link href="/admin/transactions" className="dash-nav-item active">💳 Transactions</Link>
-          <Link href="/admin/blogs" className="dash-nav-item">📝 Blog Posts</Link>
-          <Link href="/admin/settings" className="dash-nav-item">⚙️ Settings</Link>
-          <div className="dash-nav-divider" />
-          <Link href="/" className="dash-nav-item" style={{ color: '#888' }}>↗ View Public Site</Link>
-        </nav>
-      </aside>
-      <div className="dash-content">
-        <div className="page-header"><h1>💳 Transactions</h1><p>Platform revenue, payouts, and financial overview.</p></div>
-        <div className="stats-grid" style={{ marginBottom: '24px' }}>
-          {[
-            { icon: '💰', num: '₦0', label: 'Total Revenue' },
-            { icon: '📤', num: '₦0', label: 'Total Payouts' },
-            { icon: '⏳', num: '₦0', label: 'Pending' },
-            { icon: '📊', num: '0%', label: 'Platform Fee Rate' },
-          ].map(s => (
-            <div key={s.label} className="stat-card">
-              <div className="stat-icon">{s.icon}</div>
-              <div className="stat-num">{s.num}</div>
-              <div className="stat-label">{s.label}</div>
-            </div>
-          ))}
-        </div>
-        <div className="empty-state">
-          <span className="empty-icon">🔨</span>
-          <h3>Payment integration coming soon</h3>
-          <p>Paystack and Flutterwave integration is in progress. Transaction history will appear here.</p>
-        </div>
-        <div className="dash-mobile-bottom-spacer" />
+    <div style={{color:'white'}}>
+      <h1 style={{fontSize:'1.5rem',fontWeight:900,marginBottom:'4px'}}>Transactions</h1>
+      <p style={{color:'#7c8db5',marginBottom:'24px'}}>Platform revenue, payouts, and financial overview.</p>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'16px',marginBottom:'28px'}} className="admin-stat-grid">
+        {stats.map(s=>(
+          <div key={s.label} style={{background:'#1a1d27',border:'1px solid rgba(255,255,255,0.06)',borderRadius:'14px',padding:'22px 20px'}}>
+            <div style={{fontSize:'1.5rem',marginBottom:'10px'}}>{s.icon}</div>
+            <div style={{fontSize:'2rem',fontWeight:900,color:'#d4af37',lineHeight:1}}>{s.num}</div>
+            <div style={{fontSize:'0.82rem',color:'#7c8db5',marginTop:'6px'}}>{s.label}</div>
+          </div>
+        ))}
       </div>
-      <DashboardMobileNav role="admin" />
+      <div style={{background:'#1a1d27',border:'1px solid rgba(255,255,255,0.06)',borderRadius:'14px',padding:'60px',textAlign:'center'}}>
+        <div style={{fontSize:'3rem',marginBottom:'16px'}}>🔨</div>
+        <h3 style={{color:'white',marginBottom:'10px'}}>Payment Integration Coming Soon</h3>
+        <p style={{color:'#7c8db5'}}>Paystack and Flutterwave integration is in progress.</p>
+      </div>
     </div>
   )
 }

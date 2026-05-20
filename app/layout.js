@@ -1,7 +1,6 @@
 import './globals.css'
 import { SessionProvider } from 'next-auth/react'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
+import ConditionalShell from '@/components/ConditionalShell'
 
 export const metadata = {
   title: {
@@ -9,7 +8,7 @@ export const metadata = {
     template: '%s | ArchiConnect NG',
   },
   description:
-    'Nigeria\'s #1 trusted marketplace to connect clients with verified, ARCON/NIA-licensed architects. Post projects, review portfolios, and hire with confidence.',
+    "Nigeria's #1 trusted marketplace to connect clients with verified, ARCON/NIA-licensed architects. Post projects, review portfolios, and hire with confidence.",
   keywords: ['architects Nigeria', 'hire architect', 'ARCON', 'NIA', 'architecture marketplace'],
   openGraph: {
     title: 'ArchiConnect NG',
@@ -23,9 +22,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <SessionProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <ConditionalShell>{children}</ConditionalShell>
         </SessionProvider>
       </body>
     </html>

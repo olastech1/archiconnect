@@ -1,43 +1,26 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import DashboardMobileNav from '@/components/DashboardMobileNav'
 
+export const metadata = { title: 'Blog Posts | Admin' }
 export default async function AdminBlogsPage() {
   const session = await auth()
-  if (!session || session.user.role !== 'admin') redirect('/login')
+  if (!session || session.user.role !== 'admin') redirect('/admin/login')
   return (
-    <div className="dashboard-wrapper">
-      <aside className="dash-sidebar">
-        <div style={{ padding: '20px 25px', borderBottom: '1px solid #eee' }}>
-          <div style={{ fontWeight: 800, color: '#0a192f' }}>{session.user.name}</div>
-          <span style={{ fontSize: '0.7rem', background: '#d4af37', color: '#0a192f', padding: '2px 8px', borderRadius: '4px', fontWeight: 800 }}>ADMIN</span>
+    <div style={{color:'white'}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'24px',flexWrap:'wrap',gap:'12px'}}>
+        <div>
+          <h1 style={{fontSize:'1.5rem',fontWeight:900,marginBottom:'4px'}}>Blog Posts</h1>
+          <p style={{color:'#7c8db5'}}>Manage platform content and publish articles.</p>
         </div>
-        <nav>
-          <Link href="/admin/dashboard" className="dash-nav-item">📊 Overview</Link>
-          <Link href="/admin/users" className="dash-nav-item">👥 Manage Users</Link>
-          <Link href="/admin/verifications" className="dash-nav-item">🛡️ Verifications</Link>
-          <Link href="/admin/transactions" className="dash-nav-item">💳 Transactions</Link>
-          <Link href="/admin/blogs" className="dash-nav-item active">📝 Blog Posts</Link>
-          <Link href="/admin/settings" className="dash-nav-item">⚙️ Settings</Link>
-          <div className="dash-nav-divider" />
-          <Link href="/" className="dash-nav-item" style={{ color: '#888' }}>↗ View Public Site</Link>
-        </nav>
-      </aside>
-      <div className="dash-content">
-        <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <div><h1>📝 Blog Posts</h1><p>Manage platform content and publish articles.</p></div>
-          <button className="btn-solid-sm" style={{ border: 'none', cursor: 'not-allowed', opacity: 0.6 }}>+ New Post</button>
-        </div>
-        <div className="empty-state" style={{ minHeight: '50vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <span className="empty-icon">🔨</span>
-          <h3>CMS Coming Soon</h3>
-          <p>A built-in content management system for publishing blog posts is under development.</p>
-          <Link href="/blog" className="btn-primary-lg" style={{ marginTop: '20px', display: 'inline-block' }}>View Public Blog →</Link>
-        </div>
-        <div className="dash-mobile-bottom-spacer" />
+        <button disabled style={{padding:'9px 22px',background:'rgba(212,175,55,0.2)',border:'1px solid rgba(212,175,55,0.3)',borderRadius:'8px',color:'#d4af37',fontWeight:800,cursor:'not-allowed',fontSize:'0.88rem',opacity:0.6}}>+ New Post</button>
       </div>
-      <DashboardMobileNav role="admin" />
+      <div style={{background:'#1a1d27',border:'1px solid rgba(255,255,255,0.06)',borderRadius:'14px',padding:'60px',textAlign:'center'}}>
+        <div style={{fontSize:'3rem',marginBottom:'16px'}}>🔨</div>
+        <h3 style={{color:'white',marginBottom:'10px'}}>CMS Coming Soon</h3>
+        <p style={{color:'#7c8db5',marginBottom:'20px'}}>A built-in content management system is under development.</p>
+        <Link href="/blog" style={{color:'#d4af37',fontWeight:700,fontSize:'0.9rem',textDecoration:'none'}}>View Public Blog →</Link>
+      </div>
     </div>
   )
 }
