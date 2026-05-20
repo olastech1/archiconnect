@@ -12,8 +12,12 @@ export async function middleware(req) {
   if (pathname.startsWith('/architect') && role !== 'architect') {
     return NextResponse.redirect(new URL('/login', req.url))
   }
+  // Allow /admin/login to pass through without auth
+  if (pathname === '/admin/login') {
+    return NextResponse.next()
+  }
   if (pathname.startsWith('/admin') && role !== 'admin') {
-    return NextResponse.redirect(new URL('/login', req.url))
+    return NextResponse.redirect(new URL('/admin/login', req.url))
   }
 
   return NextResponse.next()
