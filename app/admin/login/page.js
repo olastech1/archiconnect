@@ -1,11 +1,9 @@
 'use client'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function AdminLoginPage() {
-  const router = useRouter()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -27,17 +25,11 @@ export default function AdminLoginPage() {
       return
     }
 
-    // Verify this user is actually an admin
-    const res = await fetch('/api/auth/session')
-    const session = await res.json()
-
-    if (session?.user?.role !== 'admin') {
-      setError('This account does not have admin privileges.')
-      setLoading(false)
-      return
-    }
-
-    router.push('/admin/dashboard')
+    // Small delay to let the JWT cookie propagate, then hard navigate
+    // so middleware reads the fresh token correctly
+    setTimeout(() => {
+      window.location.href = '/admin/dashboard'
+    }, 300)
   }
 
   return (
