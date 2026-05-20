@@ -81,7 +81,7 @@ export default function ArchitectVerificationPage() {
         <div className="form-card">
           <h3 style={{ marginBottom: '20px', fontSize: '1.05rem' }}>Submit Your Credentials</h3>
           <form onSubmit={handleSubmit}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="grid-2col">
               <div className="form-group">
                 <label>ARCON Registration Number *</label>
                 <input name="arconNumber" className="form-control" placeholder="e.g. ARCON/2019/1234" defaultValue={profile.arconNumber || ''} required />
@@ -92,7 +92,7 @@ export default function ArchitectVerificationPage() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="grid-2col">
               <div className="form-group">
                 <label>Years of Experience</label>
                 <input name="experienceYears" className="form-control" type="number" min="0" max="60" placeholder="e.g. 8" defaultValue={profile.experienceYears || ''} />

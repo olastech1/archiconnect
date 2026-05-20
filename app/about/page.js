@@ -9,7 +9,7 @@ export default function AboutPage() {
   return (
     <main>
       {/* Hero */}
-      <section style={{ background: 'linear-gradient(135deg, #0a192f 0%, #172a45 100%)', color: 'white', padding: '80px 0', textAlign: 'center' }}>
+      <section className="public-hero" style={{ background: 'linear-gradient(135deg, #0a192f 0%, #172a45 100%)', color: 'white', padding: '80px 0', textAlign: 'center' }}>
         <div className="container">
           <div className="badge-pill" style={{ background: 'rgba(212,175,55,0.15)', color: '#d4af37', marginBottom: '20px' }}>Our Story</div>
           <h1 style={{ fontSize: '2.8rem', fontWeight: 900, marginBottom: '20px', lineHeight: 1.2 }}>
@@ -24,7 +24,7 @@ export default function AboutPage() {
       {/* Mission */}
       <section style={{ padding: '80px 0', background: '#f8f9fb' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center' }}>
+          <div className="grid-2col-lg">
             <div>
               <h2 style={{ fontSize: '2rem', color: '#0a192f', marginBottom: '20px', fontWeight: 800 }}>Our Mission</h2>
               <p style={{ color: '#4a5568', lineHeight: 1.9, marginBottom: '16px', fontSize: '1rem' }}>
@@ -34,7 +34,7 @@ export default function AboutPage() {
                 Every architect on our platform is credential-verified through ARCON and NIA, so you know exactly who you&apos;re hiring.
               </p>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div className="grid-2col">
               {[
                 { icon: '🛡️', label: 'ARCON Verified', desc: 'All architects are license-checked' },
                 { icon: '🏛️', label: 'NIA Certified', desc: 'Members of professional bodies' },
@@ -55,7 +55,7 @@ export default function AboutPage() {
       {/* Stats */}
       <section style={{ padding: '60px 0', background: '#0a192f', color: 'white', textAlign: 'center' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '30px' }}>
+          <div className="grid-4col">
             {[
               { num: '500+', label: 'Verified Architects' },
               { num: '1,200+', label: 'Projects Completed' },
@@ -76,7 +76,7 @@ export default function AboutPage() {
         <div className="container">
           <h2 style={{ fontSize: '2rem', color: '#0a192f', marginBottom: '16px', fontWeight: 800 }}>Ready to Build?</h2>
           <p style={{ color: '#4a5568', marginBottom: '32px', fontSize: '1rem' }}>Join thousands of clients and architects on Nigeria&apos;s most trusted platform.</p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="hero-cta">
             <Link href="/register" className="btn-primary-lg">Get Started Free</Link>
             <Link href="/marketplace" className="btn-outline-lg">Browse Architects</Link>
           </div>

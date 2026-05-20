@@ -72,12 +72,12 @@ export default function ArchitectPortfolioPage() {
       </aside>
 
       <div className="dash-content">
-        <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div className="page-header-row">
           <div>
             <h1>Portfolio Manager 🎨</h1>
             <p>Showcase your best architectural work to attract clients.</p>
           </div>
-          <button className="btn-solid-sm" onClick={() => setShowForm(!showForm)} style={{ marginTop: '4px', cursor: 'pointer', border: 'none', fontSize: '0.9rem' }}>
+          <button className="btn-solid-sm" onClick={() => setShowForm(!showForm)} style={{ cursor: 'pointer', border: 'none', fontSize: '0.9rem' }}>
             {showForm ? '✕ Cancel' : '+ Add Project'}
           </button>
         </div>
@@ -90,7 +90,7 @@ export default function ArchitectPortfolioPage() {
           <div className="form-card" style={{ marginBottom: '30px' }}>
             <h3 style={{ marginBottom: '20px', fontSize: '1.1rem' }}>Add Portfolio Item</h3>
             <form onSubmit={handleAdd}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="grid-2col">
                 <div className="form-group">
                   <label>Project Title *</label>
                   <input name="title" className="form-control" placeholder="e.g. 4-Bedroom Duplex, Lekki" required />
@@ -112,7 +112,7 @@ export default function ArchitectPortfolioPage() {
                 <small style={{ color: '#888', fontSize: '0.8rem' }}>Paste a public image URL (Unsplash, your portfolio site, etc.)</small>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="grid-2col">
                 <div className="form-group">
                   <label>Location</label>
                   <input name="location" className="form-control" placeholder="e.g. Lagos, Nigeria" />

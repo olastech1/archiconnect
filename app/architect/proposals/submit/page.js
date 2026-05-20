@@ -87,7 +87,7 @@ function SubmitProposalForm() {
               <textarea name="coverLetter" className="form-control" rows={7} required style={{ resize: 'vertical' }}
                 placeholder="Explain your approach, relevant experience, and why you are the best fit for this project..." />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="grid-2col">
               <div className="form-group">
                 <label>Proposed Design Fee (₦) *</label>
                 <input name="proposedFee" className="form-control" type="number" placeholder="e.g. 500000" required />

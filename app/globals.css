@@ -397,12 +397,85 @@ tr:hover td { background: #fafafa; }
 .dash-mobile-bottom-spacer { display: none; height: 80px; }
 
 /* ============================================
+   RESPONSIVE UTILITY CLASSES
+   ============================================ */
+
+/* 2-column grid → stacks to 1 on mobile */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* 2-column grid with larger gap for sections */
+.grid-2col-lg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+/* 4-column grid → 2×2 on mobile */
+.grid-4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Page header row (title + action button) */
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.page-header-row h1 { font-size: 1.6rem; color: var(--text-main); margin-bottom: 5px; }
+.page-header-row p { color: var(--text-light); font-size: 0.93rem; }
+
+/* Inline alert banner with link */
+.msg-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+/* Card with flex layout → stacks on mobile */
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Info grid for public pages (About, Verify) */
+.info-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Hero action buttons */
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ============================================
    18. RESPONSIVE — TABLET (max 1024px)
    ============================================ */
 @media (max-width: 1024px) {
   .dash-sidebar { width: 220px; }
   .dash-content { padding: 24px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .grid-2col-lg { gap: 36px; }
 }
 
 /* ============================================
@@ -569,6 +642,42 @@ tr:hover td { background: #fafafa; }
 
   /* Blog */
   .blog-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* ── Utility classes on mobile ── */
+  .grid-2col { grid-template-columns: 1fr; gap: 20px; }
+  .grid-2col-lg { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+  .grid-4col { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .info-grid-2 { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .page-header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .page-header-row .btn-solid-sm,
+  .page-header-row .btn-outline-sm { align-self: flex-start; }
+  .msg-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .card-row { flex-direction: column; }
+
+  /* ── Public page sections on mobile ── */
+
+  /* About page */
+  .about-mission-text { text-align: left !important; }
+  .about-stats .grid-4col { grid-template-columns: 1fr 1fr; }
+
+  /* Contact page */
+  .contact-layout { grid-template-columns: 1fr !important; gap: 28px !important; }
+
+  /* Verify page */
+  .verify-search-row { flex-direction: column; }
+  .verify-search-row input { width: 100%; }
+  .verify-search-row button { width: 100%; max-width: 100% !important; }
+
+  /* Admin settings card */
+  .setting-card-row { flex-direction: column; align-items: flex-start !important; }
+  .setting-card-row .setting-actions { align-self: flex-start; }
+
+  /* Notifications */
+  .notif-item { padding: 12px 14px; gap: 10px; }
+
+  /* Public page heroes */
+  .public-hero h1 { font-size: 2rem !important; }
+  .public-hero p { font-size: 0.95rem !important; }
 }
 
 /* Extra small phones */
@@ -581,4 +690,9 @@ tr:hover td { background: #fafafa; }
   .btn-primary-lg, .btn-outline-lg { width: 100%; text-align: center; }
   .auth-card { padding: 24px 16px; }
   .portfolio-gallery { grid-template-columns: 1fr; }
+  .grid-2col { gap: 14px; }
+  .grid-4col { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .info-grid-2 { grid-template-columns: 1fr; }
+  .hero-cta { flex-direction: column; align-items: center; }
+  .hero-cta .btn-primary-lg, .hero-cta .btn-outline-lg { width: 100%; text-align: center; }
 }

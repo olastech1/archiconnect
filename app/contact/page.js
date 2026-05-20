@@ -13,7 +13,7 @@ export default function ContactPage() {
 
   return (
     <main>
-      <section style={{ background: 'linear-gradient(135deg, #0a192f 0%, #172a45 100%)', padding: '70px 0', textAlign: 'center', color: 'white' }}>
+      <section className="public-hero" style={{ background: 'linear-gradient(135deg, #0a192f 0%, #172a45 100%)', padding: '70px 0', textAlign: 'center', color: 'white' }}>
         <div className="container">
           <h1 style={{ fontSize: '2.6rem', fontWeight: 900, marginBottom: '14px' }}>Contact Support</h1>
           <p style={{ color: '#a8b2d1', fontSize: '1.05rem', maxWidth: '500px', margin: '0 auto' }}>
@@ -22,8 +22,8 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section style={{ padding: '70px 0', background: '#f8f9fb' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '60px', alignItems: 'start', maxWidth: '900px' }}>
+      <section style={{ padding: '60px 0', background: '#f8f9fb' }}>
+        <div className="container contact-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '60px', alignItems: 'start', maxWidth: '900px' }}>
 
           {/* Info */}
           <div>

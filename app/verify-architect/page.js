@@ -5,7 +5,7 @@ export const metadata = { title: 'Verify an Architect | ArchiConnect NG' }
 export default function VerifyArchitectPage() {
   return (
     <main>
-      <section style={{ background: 'linear-gradient(135deg, #0a192f 0%, #172a45 100%)', padding: '70px 0', textAlign: 'center', color: 'white' }}>
+      <section className="public-hero" style={{ background: 'linear-gradient(135deg, #0a192f 0%, #172a45 100%)', padding: '70px 0', textAlign: 'center', color: 'white' }}>
         <div className="container">
           <h1 style={{ fontSize: '2.6rem', fontWeight: 900, marginBottom: '14px' }}>Verify an Architect 🛡️</h1>
           <p style={{ color: '#a8b2d1', fontSize: '1.05rem', maxWidth: '520px', margin: '0 auto' }}>
@@ -16,17 +16,20 @@ export default function VerifyArchitectPage() {
 
       <section style={{ padding: '60px 0', background: '#f8f9fb' }}>
         <div className="container" style={{ maxWidth: '600px', textAlign: 'center' }}>
-          <div className="form-card" style={{ marginBottom: '30px' }}>
+
+          {/* Search */}
+          <div className="form-card" style={{ marginBottom: '30px', textAlign: 'left' }}>
             <h2 style={{ fontSize: '1.3rem', color: '#0a192f', marginBottom: '6px', fontWeight: 800 }}>Search by ARCON Number</h2>
-            <p style={{ color: '#888', marginBottom: '24px', fontSize: '0.9rem' }}>Enter an architect&apos;s ARCON registration number to verify their status.</p>
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <p style={{ color: '#888', marginBottom: '20px', fontSize: '0.9rem' }}>Enter an architect&apos;s ARCON registration number to verify their status.</p>
+            <div className="verify-search-row" style={{ display: 'flex', gap: '10px' }}>
               <input className="form-control" placeholder="e.g. ARCON/2019/1234" style={{ flex: 1 }} />
-              <button className="btn-full" style={{ maxWidth: '120px' }}>Check</button>
+              <button className="btn-full" style={{ maxWidth: '120px', whiteSpace: 'nowrap' }}>Check</button>
             </div>
-            <p style={{ marginTop: '14px', fontSize: '0.82rem', color: '#aaa' }}>This feature will query our live verification database.</p>
+            <p style={{ marginTop: '12px', fontSize: '0.82rem', color: '#aaa' }}>This feature will query our live verification database.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '30px' }}>
+          {/* Info cards */}
+          <div className="info-grid-2" style={{ marginBottom: '30px' }}>
             {[
               { icon: '✅', title: 'Verified Badge', desc: 'All verified architects display a green ✔ badge on their profile.' },
               { icon: '🛡️', title: 'ARCON Checked', desc: 'We cross-check with the Architects Registration Council of Nigeria.' },

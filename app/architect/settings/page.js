@@ -72,7 +72,7 @@ export default function ArchitectSettingsPage() {
         <div className="form-card">
           <h3 style={{ marginBottom: '20px', fontSize: '1.05rem' }}>Public Profile</h3>
           <form onSubmit={handleSubmit}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="grid-2col">
               <div className="form-group">
                 <label>Years of Experience</label>
                 <input name="experienceYears" className="form-control" type="number" min="0" max="60" defaultValue={profile?.experienceYears || ''} placeholder="e.g. 5" />

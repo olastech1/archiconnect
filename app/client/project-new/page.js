@@ -76,7 +76,7 @@ export default function PostProjectPage() {
               <textarea name="description" className="form-control" rows={5} placeholder="Describe your project in detail — site size, number of floors, style preferences, etc." required style={{ resize: 'vertical' }}></textarea>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div className="grid-2col">
               <div className="form-group">
                 <label>Project Type</label>
                 <select name="projectType" className="form-control">
@@ -93,7 +93,7 @@ export default function PostProjectPage() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div className="grid-2col">
               <div className="form-group">
                 <label>Budget Min (₦)</label>
                 <input type="number" name="budgetMin" className="form-control" placeholder="e.g. 500000" />
