@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import DashboardMobileNav from '@/components/DashboardMobileNav'
 
 export const metadata = { title: 'Client Dashboard' }
 
@@ -27,12 +28,10 @@ export default async function ClientDashboard() {
 
   return (
     <div className="dashboard-wrapper">
-      {/* Sidebar */}
+      {/* Desktop Sidebar */}
       <aside className="dash-sidebar">
         <div style={{ padding: '20px 25px', borderBottom: '1px solid #eee' }}>
-          <div style={{ fontWeight: 800, fontSize: '1rem', color: '#0a192f' }}>
-            {session.user.name}
-          </div>
+          <div style={{ fontWeight: 800, fontSize: '1rem', color: '#0a192f' }}>{session.user.name}</div>
           <div style={{ fontSize: '0.82rem', color: '#888', marginTop: '3px' }}>Client Account</div>
         </div>
         <nav>
@@ -44,7 +43,6 @@ export default async function ClientDashboard() {
           <Link href="/client/contracts" className="dash-nav-item">📄 Contracts</Link>
           <p className="dash-nav-section">Communication</p>
           <Link href="/client/messages" className="dash-nav-item">💬 Messages</Link>
-          <Link href="/notifications" className="dash-nav-item">🔔 Notifications</Link>
           <div className="dash-nav-divider" />
           <Link href="/marketplace" className="dash-nav-item">🔍 Browse Architects</Link>
         </nav>
@@ -88,40 +86,53 @@ export default async function ClientDashboard() {
             <Link href="/client/project-new" className="btn-solid-sm">+ Post New</Link>
           </div>
           {client?.projects && client.projects.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Project</th>
-                  <th>Type</th>
-                  <th>State</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {client.projects.map(p => (
-                  <tr key={p.id}>
-                    <td><strong>{p.title}</strong></td>
-                    <td>{p.projectType || '—'}</td>
-                    <td>{p.state || '—'}</td>
-                    <td><span className={`badge badge-${p.status === 'open' ? 'green' : p.status === 'closed' ? 'gray' : 'blue'}`}>{p.status}</span></td>
-                    <td>{new Date(p.createdAt).toLocaleDateString()}</td>
-                    <td><Link href={`/client/projects/${p.id}`} style={{ color: '#007f5f', fontWeight: 700, fontSize: '0.85rem' }}>View</Link></td>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Type</th>
+                    <th>State</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {client.projects.map(p => (
+                    <tr key={p.id}>
+                      <td><strong>{p.title}</strong></td>
+                      <td>{p.projectType || '—'}</td>
+                      <td>{p.state || '—'}</td>
+                      <td><span className={`badge badge-${p.status === 'open' ? 'green' : p.status === 'closed' ? 'gray' : 'blue'}`}>{p.status}</span></td>
+                      <td>{new Date(p.createdAt).toLocaleDateString()}</td>
+                      <td><Link href={`/client/projects/${p.id}`} style={{ color: '#007f5f', fontWeight: 700, fontSize: '0.85rem' }}>View</Link></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <div className="empty-state">
-              <div className="empty-icon">📂</div>
+              <span className="empty-icon">📂</span>
               <h3>No projects yet</h3>
               <p>Post your first project to start receiving proposals from verified architects.</p>
               <Link href="/client/project-new" className="btn-primary-lg" style={{ marginTop: '16px', display: 'inline-block' }}>Post a Project</Link>
             </div>
           )}
         </div>
+
+        {/* Quick Actions mobile-friendly */}
+        <div style={{ display: 'flex', gap: '12px', marginTop: '20px', flexWrap: 'wrap' }}>
+          <Link href="/client/project-new" className="btn-solid-sm">➕ Post a Project</Link>
+          <Link href="/marketplace" className="btn-outline-sm">🔍 Browse Architects</Link>
+        </div>
+
+        <div className="dash-mobile-bottom-spacer" />
       </div>
+
+      {/* Mobile Bottom Nav */}
+      <DashboardMobileNav role="client" />
     </div>
   )
 }

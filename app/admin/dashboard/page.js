@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import DashboardMobileNav from '@/components/DashboardMobileNav'
 
 export const metadata = { title: 'Admin Dashboard' }
 
@@ -95,30 +96,34 @@ export default async function AdminDashboard() {
             <h3>Recent Registrations</h3>
             <Link href="/admin/users" className="btn-solid-sm">View All Users</Link>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Verified</th>
-                <th>Joined</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentUsers.map(u => (
-                <tr key={u.id}>
-                  <td><strong>{u.fullName}</strong></td>
-                  <td>{u.email}</td>
-                  <td><span className={`badge badge-${u.role === 'admin' ? 'blue' : u.role === 'architect' ? 'green' : 'gray'}`}>{u.role}</span></td>
-                  <td>{u.isVerified ? <span className="badge badge-green">✔ Yes</span> : <span className="badge badge-yellow">Pending</span>}</td>
-                  <td>{new Date(u.createdAt).toLocaleDateString()}</td>
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Verified</th>
+                  <th>Joined</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {recentUsers.map(u => (
+                  <tr key={u.id}>
+                    <td><strong>{u.fullName}</strong></td>
+                    <td>{u.email}</td>
+                    <td><span className={`badge badge-${u.role === 'admin' ? 'blue' : u.role === 'architect' ? 'green' : 'gray'}`}>{u.role}</span></td>
+                    <td>{u.isVerified ? <span className="badge badge-green">✔ Yes</span> : <span className="badge badge-yellow">Pending</span>}</td>
+                    <td>{new Date(u.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
+        <div className="dash-mobile-bottom-spacer" />
       </div>
+      <DashboardMobileNav role="admin" />
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import DashboardMobileNav from '@/components/DashboardMobileNav'
 
 export const metadata = { title: 'Architect Dashboard' }
 
@@ -103,38 +104,42 @@ export default async function ArchitectDashboard() {
             <Link href="/marketplace" className="btn-solid-sm">Find Projects</Link>
           </div>
           {profile?.proposals && profile.proposals.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Project</th>
-                  <th>Proposed Fee</th>
-                  <th>Timeline</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {profile.proposals.map(p => (
-                  <tr key={p.id}>
-                    <td><strong>{p.project?.title || '—'}</strong></td>
-                    <td>{p.proposedFee ? `₦${p.proposedFee.toLocaleString()}` : '—'}</td>
-                    <td>{p.timeline || '—'}</td>
-                    <td><span className={`badge badge-${p.status === 'accepted' ? 'green' : p.status === 'rejected' ? 'red' : 'yellow'}`}>{p.status}</span></td>
-                    <td>{new Date(p.createdAt).toLocaleDateString()}</td>
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Proposed Fee</th>
+                    <th>Timeline</th>
+                    <th>Status</th>
+                    <th>Date</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {profile.proposals.map(p => (
+                    <tr key={p.id}>
+                      <td><strong>{p.project?.title || '—'}</strong></td>
+                      <td>{p.proposedFee ? `₦${p.proposedFee.toLocaleString()}` : '—'}</td>
+                      <td>{p.timeline || '—'}</td>
+                      <td><span className={`badge badge-${p.status === 'accepted' ? 'green' : p.status === 'rejected' ? 'red' : 'yellow'}`}>{p.status}</span></td>
+                      <td>{new Date(p.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
             <div className="empty-state">
-              <div className="empty-icon">📋</div>
+              <span className="empty-icon">📋</span>
               <h3>No proposals yet</h3>
               <p>Browse open projects and submit your first proposal.</p>
               <Link href="/marketplace" className="btn-primary-lg" style={{ marginTop: '16px', display: 'inline-block' }}>Find Projects</Link>
             </div>
           )}
         </div>
+        <div className="dash-mobile-bottom-spacer" />
       </div>
+      <DashboardMobileNav role="architect" />
     </div>
   )
 }
