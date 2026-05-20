@@ -83,10 +83,7 @@ export default async function AdminUsersPage({ searchParams }) {
             </thead>
             <tbody>
               {users.map(u => (
-                <tr key={u.id} style={{ transition: 'background 0.1s' }}
-                  onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
-                  onMouseOut={e => e.currentTarget.style.background = 'transparent'}
-                >
+                <tr key={u.id}>
                   <td style={S.td}><strong style={{ color: 'white' }}>{u.fullName}</strong></td>
                   <td style={{ ...S.td, fontSize: '0.82rem' }}>{u.email}</td>
                   <td style={S.td}><Badge type={u.role} label={u.role} /></td>

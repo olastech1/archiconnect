@@ -696,3 +696,32 @@ tr:hover td { background: #fafafa; }
   .hero-cta { flex-direction: column; align-items: center; }
   .hero-cta .btn-primary-lg, .hero-cta .btn-outline-lg { width: 100%; text-align: center; }
 }
+
+/* ═══════════════════════════════════════
+   ADMIN PANEL RESPONSIVE UTILITIES
+═══════════════════════════════════════ */
+.admin-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.admin-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.admin-sidebar {
+  width: 240px !important;
+}
+
+/* Admin sidebar mobile */
+@media (max-width: 900px) {
+  .admin-stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-quick-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .admin-stat-grid { grid-template-columns: 1fr 1fr; }
+  .admin-quick-grid { grid-template-columns: 1fr; }
+  .admin-sidebar { display: none !important; }
+  .admin-mobile-menu-btn { display: flex !important; }
+}
