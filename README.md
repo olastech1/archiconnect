@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ArchiConnect NG
 
-## Getting Started
+**Nigeria's #1 Verified Architecture Marketplace** — built with Next.js, Prisma, and NextAuth.js. Deployable on Vercel with a free Neon PostgreSQL database.
 
-First, run the development server:
+## 🚀 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | Next.js 15 (App Router) |
+| Backend | Next.js API Routes + Server Actions |
+| Database | PostgreSQL via **Neon** (free tier) |
+| ORM | **Prisma** |
+| Auth | **NextAuth.js v5** (JWT + bcrypt) |
+| Hosting | **Vercel** (free tier) |
+| Styling | Vanilla CSS (dark navy + gold design system) |
+
+## ⚡ Quick Start (Local Development)
 
 ```bash
+# 1. Clone the repo
+git clone https://github.com/YOUR_USERNAME/archiconnect-ng.git
+cd archiconnect-ng
+
+# 2. Install dependencies
+npm install
+
+# 3. Set up environment variables
+cp .env.local.example .env.local
+# Edit .env.local with your Neon DATABASE_URL and NEXTAUTH_SECRET
+
+# 4. Set up the database
+npx prisma generate
+npx prisma db push
+
+# 5. Run locally
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🌐 Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Step 1: Set Up Free Database (Neon)
+1. Go to [https://neon.tech](https://neon.tech) and create a free account
+2. Create a new project → copy the **Connection String**
 
-## Learn More
+### Step 2: Push to GitHub
+```bash
+git init
+git add .
+git commit -m "Initial commit: ArchiConnect NG"
+git remote add origin https://github.com/YOUR_USERNAME/archiconnect-ng.git
+git push -u origin main
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Step 3: Deploy on Vercel
+1. Go to [https://vercel.com](https://vercel.com)
+2. Click **"Add New Project"** → Import your GitHub repo
+3. Add Environment Variables:
+   - `DATABASE_URL` = your Neon connection string
+   - `NEXTAUTH_SECRET` = any random 32-char string
+   - `NEXTAUTH_URL` = your Vercel app URL (e.g. `https://archiconnect-ng.vercel.app`)
+4. Click **Deploy** ✅
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Step 4: Initialize the Database
+```bash
+npx prisma db push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Project Structure
 
-## Deploy on Vercel
+```
+archiconnect-ng/
+├── app/
+│   ├── page.js                 # Homepage
+│   ├── layout.js               # Root layout
+│   ├── globals.css             # Global styles
+│   ├── login/page.js           # Login
+│   ├── register/page.js        # Register (client/architect)
+│   ├── marketplace/page.js     # Browse architects
+│   ├── architects/[id]/        # Architect profile
+│   ├── client/                 # Client dashboard
+│   ├── architect/              # Architect dashboard
+│   ├── admin/                  # Admin dashboard
+│   └── api/                    # API routes
+├── components/
+│   ├── Navbar.js               # Smart role-based navbar
+│   └── Footer.js               # Footer
+├── lib/
+│   ├── prisma.js               # Prisma client singleton
+│   └── auth.js                 # NextAuth config
+├── prisma/
+│   └── schema.prisma           # Database schema
+└── middleware.js               # Route protection
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔐 Default Roles
+- **Client** — Post projects, review proposals, hire architects
+- **Architect** — Build portfolio, submit proposals, manage contracts
+- **Admin** — Verify architects, manage users, platform settings
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📜 Core Features
+- ✅ Role-based dashboards (Client / Architect / Admin)
+- ✅ NIA/ARCON credential verification system
+- ✅ Portfolio management
+- ✅ Project & proposal workflow
+- ✅ Secure messaging (E2EE ready)
+- ✅ Real-time notifications
+- ✅ Blog/news system
+- ✅ JWT authentication

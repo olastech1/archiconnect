@@ -1,0 +1,205 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int               @id @default(autoincrement())
+  fullName          String            @map("full_name")
+  email             String            @unique
+  password          String
+  role              Role              @default(client)
+  profilePic        String?           @map("profile_pic")
+  isVerified        Boolean           @default(false) @map("is_verified")
+  verificationToken String?           @map("verification_token")
+  createdAt         DateTime          @default(now()) @map("created_at")
+
+  architectProfile  ArchitectProfile?
+  clientProfile     ClientProfile?
+  sentMessages      Message[]         @relation("SentMessages")
+  receivedMessages  Message[]         @relation("ReceivedMessages")
+  notifications     Notification[]
+  blogPosts         BlogPost[]
+
+  @@map("users")
+}
+
+enum Role {
+  client
+  architect
+  admin
+}
+
+model ArchitectProfile {
+  id                 Int       @id @default(autoincrement())
+  userId             Int       @unique @map("user_id")
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  verificationStatus String    @default("unverified") @map("verification_status")
+  experienceYears    Int?      @map("experience_years")
+  specialization     String?
+  state              String?
+  bio                String?
+  arconNumber        String?   @map("arcon_number")
+  niaNumber          String?   @map("nia_number")
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  portfolios         Portfolio[]
+  proposals          Proposal[]
+  contracts          Contract[]
+
+  @@map("architect_profiles")
+}
+
+model ClientProfile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone     String?
+  state     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  projects  Project[]
+
+  @@map("client_profiles")
+}
+
+model Portfolio {
+  id           Int              @id @default(autoincrement())
+  architectId  Int              @map("architect_id")
+  architect    ArchitectProfile @relation(fields: [architectId], references: [id], onDelete: Cascade)
+  title        String?
+  description  String?
+  imageUrl     String           @map("image_url")
+  createdAt    DateTime         @default(now()) @map("created_at")
+
+  @@map("portfolios")
+}
+
+model Project {
+  id            Int           @id @default(autoincrement())
+  clientId      Int           @map("client_id")
+  client        ClientProfile @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  title         String
+  description   String?       @db.Text
+  projectType   String?       @map("project_type")
+  state         String?
+  budgetMin     Float?        @map("budget_min")
+  budgetMax     Float?        @map("budget_max")
+  status        String        @default("open")
+  createdAt     DateTime      @default(now()) @map("created_at")
+
+  proposals     Proposal[]
+  contracts     Contract[]
+
+  @@map("projects")
+}
+
+model Proposal {
+  id           Int              @id @default(autoincrement())
+  projectId    Int              @map("project_id")
+  project      Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  architectId  Int              @map("architect_id")
+  architect    ArchitectProfile @relation(fields: [architectId], references: [id], onDelete: Cascade)
+  coverLetter  String?          @map("cover_letter") @db.Text
+  proposedFee  Float?           @map("proposed_fee")
+  timeline     String?
+  status       String           @default("pending")
+  createdAt    DateTime         @default(now()) @map("created_at")
+
+  @@map("proposals")
+}
+
+model Contract {
+  id           Int              @id @default(autoincrement())
+  projectId    Int              @map("project_id")
+  project      Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  architectId  Int              @map("architect_id")
+  architect    ArchitectProfile @relation(fields: [architectId], references: [id], onDelete: Cascade)
+  totalAmount  Float            @map("total_amount")
+  status       String           @default("active")
+  startDate    DateTime?        @map("start_date")
+  endDate      DateTime?        @map("end_date")
+  createdAt    DateTime         @default(now()) @map("created_at")
+
+  milestones   Milestone[]
+
+  @@map("contracts")
+}
+
+model Milestone {
+  id          Int      @id @default(autoincrement())
+  contractId  Int      @map("contract_id")
+  contract    Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  title       String
+  amount      Float
+  status      String   @default("pending")
+  dueDate     DateTime? @map("due_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("milestones")
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  senderId    Int      @map("sender_id")
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId  Int      @map("receiver_id")
+  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  content     String   @db.Text
+  isEncrypted Boolean  @default(true) @map("is_encrypted")
+  isRead      Boolean  @default(false) @map("is_read")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("messages")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  link      String?
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("notifications")
+}
+
+model BlogPost {
+  id        Int      @id @default(autoincrement())
+  authorId  Int?     @map("author_id")
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  title     String
+  content   String   @db.Text
+  imageUrl  String?  @map("image_url")
+  slug      String?  @unique
+  published Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("blog_posts")
+}
+
+model Testimonial {
+  id          Int      @id @default(autoincrement())
+  clientName  String   @map("client_name")
+  location    String?
+  rating      Int      @default(5)
+  content     String
+  imageUrl    String?  @map("image_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("testimonials")
+}
+
+model ProjectType {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  imageUrl String @map("image_url")
+
+  @@map("project_types")
+}
