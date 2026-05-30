@@ -40,14 +40,13 @@ export default function AdminLayout({ children }) {
         borderRight: '1px solid rgba(255,255,255,0.06)',
         display: 'flex',
         flexDirection: 'column',
-        transition: 'width 0.25s ease',
         flexShrink: 0,
         position: 'sticky',
         top: 0,
         height: '100vh',
         zIndex: 30,
       }}
-        className="admin-sidebar"
+        className={`admin-sidebar ${mobileOpen ? 'open' : ''}`}
       >
         {/* Brand */}
         <div style={{ padding: '20px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: '10px', justifyContent: collapsed ? 'center' : 'space-between' }}>
@@ -121,7 +120,7 @@ export default function AdminLayout({ children }) {
       {/* Main area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         {/* Top bar */}
-        <header style={{
+        <header className="admin-top-bar" style={{
           height: '64px',
           background: '#13161e',
           borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -150,7 +149,7 @@ export default function AdminLayout({ children }) {
 
           {/* Right side */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: 'auto' }}>
-            <div style={{ textAlign: 'right' }}>
+            <div style={{ textAlign: 'right' }} className="admin-user-role-text">
               <div style={{ fontSize: '0.82rem', fontWeight: 700, color: 'white' }}>{session?.user?.name || 'Admin'}</div>
               <div style={{ fontSize: '0.7rem', color: '#d4af37', fontWeight: 800, letterSpacing: '0.08em' }}>SUPER ADMIN</div>
             </div>
@@ -161,7 +160,7 @@ export default function AdminLayout({ children }) {
         </header>
 
         {/* Page content */}
-        <main style={{ flex: 1, padding: '28px', overflowY: 'auto' }}>
+        <main className="admin-main-content" style={{ flex: 1, padding: '28px', overflowY: 'auto' }}>
           {children}
         </main>
       </div>

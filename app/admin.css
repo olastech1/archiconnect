@@ -1,0 +1,73 @@
+/* ═══════════════════════════════════════
+   ADMIN PANEL RESPONSIVE UTILITIES
+═══════════════════════════════════════ */
+.admin-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.admin-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+/* Base styles for sidebar */
+.admin-sidebar {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
+}
+
+/* Mobile Breakpoint (<900px) */
+@media (max-width: 900px) {
+  .admin-stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-quick-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Mobile Breakpoint (<768px) */
+@media (max-width: 768px) {
+  .admin-stat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .admin-quick-grid { grid-template-columns: 1fr; gap: 12px; }
+  
+  /* Sidebar Drawer Style */
+  .admin-sidebar {
+    position: fixed !important;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    z-index: 50 !important;
+    width: 260px !important; /* Slightly wider on mobile for thumb reachability */
+  }
+  
+  /* When open, slide in */
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  /* Show menu button on mobile */
+  .admin-mobile-menu-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Adjust main container padding */
+  .admin-main-content {
+    padding: 16px !important;
+  }
+  
+  /* Adjust top bar */
+  .admin-top-bar {
+    padding: 0 16px !important;
+  }
+  
+  /* Hide super admin text on very small screens */
+  .admin-user-role-text {
+    display: none;
+  }
+}
+
+/* Extra Small Screens */
+@media (max-width: 480px) {
+  .admin-stat-grid { grid-template-columns: 1fr; }
+  .admin-stat-grid > div { padding: 16px !important; }
+}
