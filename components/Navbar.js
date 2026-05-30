@@ -127,6 +127,7 @@ export default function Navbar() {
               <Link href="/client/projects" className="sidebar-link" onClick={() => setSidebarOpen(false)}>📁 My Projects</Link>
               <Link href="/client/project-new" className="sidebar-link" onClick={() => setSidebarOpen(false)}>➕ Post a Project</Link>
               <Link href="/client/messages" className="sidebar-link" onClick={() => setSidebarOpen(false)}>💬 Messages</Link>
+              <Link href="/client/settings" className="sidebar-link" onClick={() => setSidebarOpen(false)}>⚙️ Settings</Link>
               <div className="menu-divider" />
               <Link href="/marketplace" className="sidebar-link" onClick={() => setSidebarOpen(false)}>🔍 Browse Architects</Link>
               <Link href="/" className="sidebar-link" onClick={() => setSidebarOpen(false)}>🏠 Home</Link>

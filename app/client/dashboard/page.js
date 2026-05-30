@@ -79,45 +79,42 @@ export default async function ClientDashboard() {
           </div>
         </div>
 
-        {/* Recent Projects */}
-        <div className="data-table-wrapper">
-          <div className="data-table-header">
-            <h3>Recent Projects</h3>
+        {/* Recent Projects as Responsive Cards */}
+        <div style={{ marginTop: '30px' }}>
+          <div className="data-table-header" style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Recent Projects</h3>
             <Link href="/client/project-new" className="btn-solid-sm">+ Post New</Link>
           </div>
+          
           {client?.projects && client.projects.length > 0 ? (
-            <div className="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Project</th>
-                    <th>Type</th>
-                    <th>State</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {client.projects.map(p => (
-                    <tr key={p.id}>
-                      <td><strong>{p.title}</strong></td>
-                      <td>{p.projectType || '—'}</td>
-                      <td>{p.state || '—'}</td>
-                      <td><span className={`badge badge-${p.status === 'open' ? 'green' : p.status === 'closed' ? 'gray' : 'blue'}`}>{p.status}</span></td>
-                      <td>{new Date(p.createdAt).toLocaleDateString()}</td>
-                      <td><Link href={`/client/projects/${p.id}`} style={{ color: '#007f5f', fontWeight: 700, fontSize: '0.85rem' }}>View</Link></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
+              {client.projects.map(p => (
+                <div key={p.id} className="glass-panel hover-glass" style={{ padding: '20px', borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0a192f', lineHeight: 1.3 }}>{p.title}</h4>
+                    <span className={`badge badge-${p.status === 'open' ? 'green' : p.status === 'closed' ? 'gray' : 'blue'}`} style={{ whiteSpace: 'nowrap' }}>{p.status}</span>
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '0.75rem', background: '#f3f4f6', padding: '4px 8px', borderRadius: '6px', color: '#4b5563', fontWeight: 600 }}>{p.projectType || 'Standard'}</span>
+                    <span style={{ fontSize: '0.75rem', background: '#f3f4f6', padding: '4px 8px', borderRadius: '6px', color: '#4b5563', fontWeight: 600 }}>📍 {p.state || 'Anywhere'}</span>
+                  </div>
+                  
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid #f3f4f6' }}>
+                    <span style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: 600 }}>{new Date(p.createdAt).toLocaleDateString()}</span>
+                    <Link href={`/client/projects/${p.id}`} style={{ color: '#007f5f', fontWeight: 800, fontSize: '0.9rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      View Details →
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
-            <div className="empty-state">
-              <span className="empty-icon">📂</span>
-              <h3>No projects yet</h3>
-              <p>Post your first project to start receiving proposals from verified architects.</p>
-              <Link href="/client/project-new" className="btn-primary-lg" style={{ marginTop: '16px', display: 'inline-block' }}>Post a Project</Link>
+            <div className="empty-state glass-panel" style={{ padding: '40px', borderRadius: '16px', textAlign: 'center' }}>
+              <span className="empty-icon" style={{ fontSize: '3rem', marginBottom: '16px', display: 'block' }}>📂</span>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0a192f', marginBottom: '8px' }}>No projects yet</h3>
+              <p style={{ color: '#6b7280', fontSize: '0.9rem' }}>Post your first project to start receiving proposals from verified architects.</p>
+              <Link href="/client/project-new" className="btn-primary-lg" style={{ marginTop: '20px', display: 'inline-block' }}>Post a Project</Link>
             </div>
           )}
         </div>

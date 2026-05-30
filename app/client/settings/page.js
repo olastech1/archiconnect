@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import DashboardMobileNav from '@/components/DashboardMobileNav'
 
-export default function ArchitectSettingsPage() {
+export default function ClientSettingsPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [success, setSuccess] = useState('')
@@ -15,22 +16,21 @@ export default function ArchitectSettingsPage() {
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
     if (status === 'authenticated') {
-      fetch('/api/architect/profile').then(r => r.json()).then(d => setProfile(d.profile))
+      fetch('/api/client/profile').then(r => r.json()).then(d => setProfile(d.profile || {}))
     }
-  }, [status])
+  }, [status, router])
 
   async function handleSubmit(e) {
     e.preventDefault()
     setLoading(true); setError(''); setSuccess('')
     const formData = new FormData(e.target)
-    const res = await fetch('/api/architect/profile', {
+    
+    const res = await fetch('/api/client/profile', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        bio: formData.get('bio'),
-        specialization: formData.get('specialization'),
+        phone: formData.get('phone'),
         state: formData.get('state'),
-        experienceYears: parseInt(formData.get('experienceYears')) || null,
       }),
     })
     const result = await res.json()
@@ -41,41 +41,44 @@ export default function ArchitectSettingsPage() {
 
   const allStates = ['Abia','Adamawa','Akwa Ibom','Anambra','Bauchi','Bayelsa','Benue','Borno','Cross River','Delta','Ebonyi','Edo','Ekiti','Enugu','FCT - Abuja','Gombe','Imo','Jigawa','Kaduna','Kano','Katsina','Kebbi','Kogi','Kwara','Lagos','Nasarawa','Niger','Ogun','Ondo','Osun','Oyo','Plateau','Rivers','Sokoto','Taraba','Yobe','Zamfara']
 
-  if (!profile) return <div className="loading-spinner"><div className="spinner"></div></div>
+  if (status === 'loading' || !profile) return <div className="loading-spinner"><div className="spinner"></div></div>
 
   return (
     <div className="dashboard-wrapper">
       <aside className="dash-sidebar">
         <div style={{ padding: '20px 25px', borderBottom: '1px solid #eee' }}>
           <div style={{ fontWeight: 800, color: '#0a192f' }}>{session?.user?.name}</div>
-          <div style={{ fontSize: '0.82rem', color: '#888' }}>Architect</div>
+          <div style={{ fontSize: '0.82rem', color: '#888' }}>Client Account</div>
         </div>
         <nav>
-          <Link href="/architect/dashboard" className="dash-nav-item">📊 Dashboard</Link>
-          <Link href="/architect/portfolio" className="dash-nav-item">🎨 Portfolio</Link>
-          <Link href="/architect/proposals" className="dash-nav-item">📋 My Proposals</Link>
-          <Link href="/architect/messages" className="dash-nav-item">💬 Messages</Link>
-          <Link href="/architect/verification" className="dash-nav-item">🛡️ Verification</Link>
-          <Link href="/architect/settings" className="dash-nav-item active">⚙️ Settings</Link>
+          <p className="dash-nav-section">Main</p>
+          <Link href="/client/dashboard" className="dash-nav-item">📊 Dashboard</Link>
+          <Link href="/client/projects" className="dash-nav-item">📁 My Projects</Link>
+          <Link href="/client/project-new" className="dash-nav-item">➕ Post Project</Link>
+          <Link href="/client/proposals" className="dash-nav-item">📋 Proposals</Link>
+          <Link href="/client/contracts" className="dash-nav-item">📄 Contracts</Link>
+          <p className="dash-nav-section">Account</p>
+          <Link href="/client/messages" className="dash-nav-item">💬 Messages</Link>
+          <Link href="/client/settings" className="dash-nav-item active">⚙️ Settings</Link>
         </nav>
       </aside>
 
       <div className="dash-content">
         <div className="page-header">
           <h1>Account Settings ⚙️</h1>
-          <p>Update your public profile information.</p>
+          <p>Update your contact information.</p>
         </div>
 
         {error && <div className="msg-error">{error}</div>}
         {success && <div className="msg-success">{success}</div>}
 
         <div className="form-card glass-panel" style={{ padding: '30px' }}>
-          <h3 style={{ marginBottom: '20px', fontSize: '1.2rem', fontWeight: 800 }}>Public Profile</h3>
+          <h3 style={{ marginBottom: '20px', fontSize: '1.2rem', fontWeight: 800 }}>Profile Details</h3>
           <form onSubmit={handleSubmit}>
             <div className="grid-2col">
               <div className="form-group">
-                <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Years of Experience</label>
-                <input name="experienceYears" className="form-control" type="number" min="0" max="60" defaultValue={profile?.experienceYears || ''} placeholder="e.g. 5" style={{ padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%' }} />
+                <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Phone Number</label>
+                <input name="phone" className="form-control" defaultValue={profile?.phone || ''} placeholder="e.g. +234..." style={{ padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%' }} />
               </div>
               <div className="form-group">
                 <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>State</label>
@@ -85,14 +88,7 @@ export default function ArchitectSettingsPage() {
                 </select>
               </div>
             </div>
-            <div className="form-group" style={{ marginTop: '16px' }}>
-              <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Specialization</label>
-              <input name="specialization" className="form-control" defaultValue={profile?.specialization || ''} placeholder="e.g. Residential, Commercial" style={{ padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%' }} />
-            </div>
-            <div className="form-group" style={{ marginTop: '16px' }}>
-              <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Bio / About</label>
-              <textarea name="bio" className="form-control" rows={6} style={{ resize: 'vertical', padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%' }} defaultValue={profile?.bio || ''} placeholder="Tell clients about your experience, design style and past projects..." />
-            </div>
+            
             <button type="submit" className="btn-solid-lg" disabled={loading} style={{ marginTop: '20px' }}>
               {loading ? 'Saving...' : '💾 Save Changes'}
             </button>
@@ -106,6 +102,7 @@ export default function ArchitectSettingsPage() {
         </div>
         <div className="dash-mobile-bottom-spacer" />
       </div>
+      <DashboardMobileNav role="client" />
     </div>
   )
 }

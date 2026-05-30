@@ -9,6 +9,7 @@ const navMap = {
     { href: '/client/project-new', icon: '➕', label: 'Post' },
     { href: '/client/proposals',   icon: '📋', label: 'Proposals' },
     { href: '/client/messages',    icon: '💬', label: 'Messages' },
+    { href: '/client/settings',    icon: '⚙️', label: 'Settings' },
   ],
   architect: [
     { href: '/architect/dashboard',    icon: '📊', label: 'Home' },

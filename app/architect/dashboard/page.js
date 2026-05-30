@@ -97,43 +97,39 @@ export default async function ArchitectDashboard() {
           </div>
         </div>
 
-        {/* Recent Proposals */}
-        <div className="data-table-wrapper">
-          <div className="data-table-header">
-            <h3>Recent Proposals</h3>
+        {/* Recent Proposals as Responsive Cards */}
+        <div style={{ marginTop: '30px' }}>
+          <div className="data-table-header" style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Recent Proposals</h3>
             <Link href="/marketplace" className="btn-solid-sm">Find Projects</Link>
           </div>
+          
           {profile?.proposals && profile.proposals.length > 0 ? (
-            <div className="table-scroll">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Project</th>
-                    <th>Proposed Fee</th>
-                    <th>Timeline</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {profile.proposals.map(p => (
-                    <tr key={p.id}>
-                      <td><strong>{p.project?.title || '—'}</strong></td>
-                      <td>{p.proposedFee ? `₦${p.proposedFee.toLocaleString()}` : '—'}</td>
-                      <td>{p.timeline || '—'}</td>
-                      <td><span className={`badge badge-${p.status === 'accepted' ? 'green' : p.status === 'rejected' ? 'red' : 'yellow'}`}>{p.status}</span></td>
-                      <td>{new Date(p.createdAt).toLocaleDateString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
+              {profile.proposals.map(p => (
+                <div key={p.id} className="glass-panel hover-glass" style={{ padding: '20px', borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <h4 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 800, color: '#0a192f', lineHeight: 1.3 }}>{p.project?.title || 'Unknown Project'}</h4>
+                    <span className={`badge badge-${p.status === 'accepted' ? 'green' : p.status === 'rejected' ? 'red' : 'yellow'}`} style={{ whiteSpace: 'nowrap' }}>{p.status}</span>
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '0.75rem', background: '#f3f4f6', padding: '4px 8px', borderRadius: '6px', color: '#4b5563', fontWeight: 600 }}>💰 {p.proposedFee ? `₦${p.proposedFee.toLocaleString()}` : 'No Fee Set'}</span>
+                    <span style={{ fontSize: '0.75rem', background: '#f3f4f6', padding: '4px 8px', borderRadius: '6px', color: '#4b5563', fontWeight: 600 }}>⏱️ {p.timeline || 'TBD'}</span>
+                  </div>
+                  
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid #f3f4f6' }}>
+                    <span style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: 600 }}>{new Date(p.createdAt).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
-            <div className="empty-state">
-              <span className="empty-icon">📋</span>
-              <h3>No proposals yet</h3>
-              <p>Browse open projects and submit your first proposal.</p>
-              <Link href="/marketplace" className="btn-primary-lg" style={{ marginTop: '16px', display: 'inline-block' }}>Find Projects</Link>
+            <div className="empty-state glass-panel" style={{ padding: '40px', borderRadius: '16px', textAlign: 'center' }}>
+              <span className="empty-icon" style={{ fontSize: '3rem', marginBottom: '16px', display: 'block' }}>📋</span>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0a192f', marginBottom: '8px' }}>No proposals yet</h3>
+              <p style={{ color: '#6b7280', fontSize: '0.9rem' }}>Browse open projects and submit your first proposal.</p>
+              <Link href="/marketplace" className="btn-primary-lg" style={{ marginTop: '20px', display: 'inline-block' }}>Find Projects</Link>
             </div>
           )}
         </div>
