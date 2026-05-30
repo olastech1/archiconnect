@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import DashboardMobileNav from '@/components/DashboardMobileNav'
 
 const allStates = [
   'Abia','Adamawa','Akwa Ibom','Anambra','Bauchi','Bayelsa','Benue','Borno','Cross River',
@@ -52,6 +53,9 @@ export default function PostProjectPage() {
           <Link href="/client/project-new" className="dash-nav-item active">➕ Post Project</Link>
           <Link href="/client/proposals" className="dash-nav-item">📋 Proposals</Link>
           <Link href="/client/messages" className="dash-nav-item">💬 Messages</Link>
+          <Link href="/client/settings" className="dash-nav-item">⚙️ Settings</Link>
+          <div className="dash-nav-divider" />
+          <Link href="/marketplace" className="dash-nav-item">🔍 Browse Architects</Link>
         </nav>
       </aside>
 
@@ -64,52 +68,54 @@ export default function PostProjectPage() {
         {error && <div className="msg-error">{error}</div>}
         {success && <div className="msg-success">{success}</div>}
 
-        <div className="form-card">
+        <div className="form-card glass-panel" style={{ padding: '30px' }}>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Project Title *</label>
-              <input name="title" className="form-control" placeholder="e.g. 4-Bedroom Duplex in Lekki" required />
+              <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Project Title *</label>
+              <input name="title" className="form-control" placeholder="e.g. 4-Bedroom Duplex in Lekki" required style={{ padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%' }} />
             </div>
 
-            <div className="form-group">
-              <label>Project Description *</label>
-              <textarea name="description" className="form-control" rows={5} placeholder="Describe your project in detail — site size, number of floors, style preferences, etc." required style={{ resize: 'vertical' }}></textarea>
+            <div className="form-group" style={{ marginTop: '16px' }}>
+              <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Project Description *</label>
+              <textarea name="description" className="form-control" rows={5} placeholder="Describe your project in detail — site size, number of floors, style preferences, etc." required style={{ resize: 'vertical', padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%' }}></textarea>
             </div>
 
-            <div className="grid-2col">
+            <div className="grid-2col" style={{ marginTop: '16px' }}>
               <div className="form-group">
-                <label>Project Type</label>
-                <select name="projectType" className="form-control">
+                <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Project Type</label>
+                <select name="projectType" className="form-control" style={{ padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%', backgroundColor: 'white' }}>
                   <option value="">Select Type</option>
                   {['Residential','Commercial','Industrial','Renovation','Landscape','Interior'].map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div className="form-group">
-                <label>Project State</label>
-                <select name="state" className="form-control">
+                <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Project State</label>
+                <select name="state" className="form-control" style={{ padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%', backgroundColor: 'white' }}>
                   <option value="">Select State</option>
                   {allStates.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
             </div>
 
-            <div className="grid-2col">
+            <div className="grid-2col" style={{ marginTop: '16px' }}>
               <div className="form-group">
-                <label>Budget Min (₦)</label>
-                <input type="number" name="budgetMin" className="form-control" placeholder="e.g. 500000" />
+                <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Budget Min (₦)</label>
+                <input type="number" name="budgetMin" className="form-control" placeholder="e.g. 500000" style={{ padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%' }} />
               </div>
               <div className="form-group">
-                <label>Budget Max (₦)</label>
-                <input type="number" name="budgetMax" className="form-control" placeholder="e.g. 5000000" />
+                <label style={{ fontWeight: 700, fontSize: '0.85rem', marginBottom: '8px', display: 'block', color: '#0a192f' }}>Budget Max (₦)</label>
+                <input type="number" name="budgetMax" className="form-control" placeholder="e.g. 5000000" style={{ padding: '14px', borderRadius: '8px', border: '1px solid #e5e7eb', width: '100%' }} />
               </div>
             </div>
 
-            <button type="submit" className="btn-full" disabled={loading} style={{ maxWidth: '300px' }}>
+            <button type="submit" className="btn-solid-lg" disabled={loading} style={{ marginTop: '24px', width: '100%', maxWidth: '300px' }}>
               {loading ? 'Posting...' : '🚀 Post Project'}
             </button>
           </form>
         </div>
+        <div className="dash-mobile-bottom-spacer" />
       </div>
+      <DashboardMobileNav role="client" />
     </div>
   )
 }

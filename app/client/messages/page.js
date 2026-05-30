@@ -18,7 +18,7 @@ function ComingSoonDash({ role, active, title, emoji, description, sidebarLinks 
           <h1>{emoji} {title}</h1>
           <p>{description}</p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh' }}>
+        <div className="glass-panel" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', marginTop: '24px' }}>
           <div style={{ textAlign: 'center', padding: '60px 20px' }}>
             <div style={{ fontSize: '4rem', marginBottom: '16px' }}>🔨</div>
             <h2 style={{ color: '#0a192f', marginBottom: '12px', fontSize: '1.4rem' }}>Coming Soon</h2>
@@ -51,6 +51,7 @@ export default async function ClientMessagesPage() {
         <Link href="/client/proposals" className="dash-nav-item">📋 Proposals</Link>
         <Link href="/client/messages" className="dash-nav-item active">💬 Messages</Link>
         <Link href="/client/contracts" className="dash-nav-item">📄 Contracts</Link>
+        <Link href="/client/settings" className="dash-nav-item">⚙️ Settings</Link>
         <div className="dash-nav-divider" />
         <Link href="/marketplace" className="dash-nav-item">🔍 Browse Architects</Link>
       </>}

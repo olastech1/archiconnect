@@ -20,13 +20,14 @@ export default async function ClientContractsPage() {
           <Link href="/client/proposals" className="dash-nav-item">📋 Proposals</Link>
           <Link href="/client/messages" className="dash-nav-item">💬 Messages</Link>
           <Link href="/client/contracts" className="dash-nav-item active">📄 Contracts</Link>
+          <Link href="/client/settings" className="dash-nav-item">⚙️ Settings</Link>
           <div className="dash-nav-divider" />
           <Link href="/marketplace" className="dash-nav-item">🔍 Browse Architects</Link>
         </nav>
       </aside>
       <div className="dash-content">
         <div className="page-header"><h1>📄 Contracts</h1><p>View and manage your active and completed contracts.</p></div>
-        <div className="empty-state" style={{ minHeight: '50vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="empty-state glass-panel" style={{ minHeight: '50vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <span className="empty-icon">🔨</span>
           <h3>Coming Soon</h3>
           <p>Contract management is under development and will be available soon.</p>
