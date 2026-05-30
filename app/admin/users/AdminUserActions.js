@@ -36,7 +36,7 @@ export default function AdminUserActions({ userId, currentRole }) {
         <button
           onClick={makeAdmin}
           disabled={loading}
-          style={{ background: '#dbeafe', color: '#1d4ed8', border: 'none', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem' }}
+          style={{ background: 'rgba(212,175,55,0.15)', color: '#d4af37', border: '1px solid rgba(212,175,55,0.3)', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem' }}
         >
           {loading ? '...' : 'Make Admin'}
         </button>
@@ -44,7 +44,7 @@ export default function AdminUserActions({ userId, currentRole }) {
       <button
         onClick={suspendUser}
         disabled={loading}
-        style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '4px 10px', borderRadius: '5px', cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem' }}
+        style={{ background: 'rgba(248,113,113,0.15)', color: '#f87171', border: '1px solid rgba(248,113,113,0.3)', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.78rem' }}
       >
         {loading ? '...' : 'Suspend'}
       </button>

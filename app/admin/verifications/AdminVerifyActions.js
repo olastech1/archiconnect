@@ -22,7 +22,7 @@ export default function AdminVerifyActions({ profileId, currentStatus }) {
       <button
         onClick={() => updateStatus('unverified')}
         disabled={loading}
-        style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
+        style={{ background: 'rgba(248,113,113,0.15)', color: '#f87171', border: '1px solid rgba(248,113,113,0.3)', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
       >
         {loading ? '...' : '✕ Revoke'}
       </button>
@@ -34,14 +34,14 @@ export default function AdminVerifyActions({ profileId, currentStatus }) {
       <button
         onClick={() => updateStatus('verified')}
         disabled={loading}
-        style={{ background: '#e6f4f1', color: '#007f5f', border: 'none', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
+        style={{ background: 'rgba(16,185,129,0.15)', color: '#6ee7b7', border: '1px solid rgba(16,185,129,0.3)', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
       >
         {loading ? '...' : '✔ Approve'}
       </button>
       <button
         onClick={() => updateStatus('rejected')}
         disabled={loading}
-        style={{ background: '#fee2e2', color: '#991b1b', border: 'none', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
+        style={{ background: 'rgba(248,113,113,0.15)', color: '#f87171', border: '1px solid rgba(248,113,113,0.3)', padding: '5px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem' }}
       >
         {loading ? '...' : '✕ Reject'}
       </button>
