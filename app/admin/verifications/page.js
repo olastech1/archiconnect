@@ -18,7 +18,7 @@ export default async function AdminVerificationsPage() {
 
   const [pending, verified] = await Promise.all([
     prisma.architectProfile.findMany({ where: { verificationStatus: { in: ['pending', 'unverified'] } }, include: { user: true }, orderBy: { createdAt: 'asc' } }),
-    prisma.architectProfile.findMany({ where: { verificationStatus: 'verified' }, include: { user: true }, orderBy: { updatedAt: 'desc' }, take: 20 }),
+    prisma.architectProfile.findMany({ where: { verificationStatus: 'verified' }, include: { user: true }, orderBy: { createdAt: 'desc' }, take: 20 }),
   ])
 
   return (
