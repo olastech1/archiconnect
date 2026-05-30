@@ -20,8 +20,10 @@ const navMap = {
   admin: [
     { href: '/admin/dashboard',       icon: '📊', label: 'Home' },
     { href: '/admin/users',           icon: '👥', label: 'Users' },
+    { href: '/admin/projects',        icon: '📁', label: 'Projects' },
     { href: '/admin/verifications',   icon: '🛡️', label: 'Verify' },
     { href: '/admin/transactions',    icon: '💳', label: 'Billing' },
+    { href: '/admin/broadcasts',      icon: '📢', label: 'Alerts' },
     { href: '/admin/settings',        icon: '⚙️', label: 'Settings' },
   ],
 }

@@ -25,35 +25,59 @@ export default async function AdminDashboard() {
   const session = await auth()
   if (!session || session.user.role !== 'admin') redirect('/admin/login')
 
-  let userCount = 0, architectCount = 0, projectCount = 0, pendingVerifications = 0, recentUsers = []
+  let userCount = 0, architectCount = 0, projectCount = 0, pendingVerifications = 0
+  let usersLastMonth = 0, projectsLastMonth = 0
+  let recentActivity = []
+  
   try {
-    ;[userCount, architectCount, projectCount, pendingVerifications] = await Promise.all([
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+    ;[userCount, architectCount, projectCount, pendingVerifications, usersLastMonth, projectsLastMonth] = await Promise.all([
       prisma.user.count(),
       prisma.user.count({ where: { role: 'architect' } }),
       prisma.project.count(),
       prisma.architectProfile.count({ where: { verificationStatus: 'pending' } }),
+      prisma.user.count({ where: { createdAt: { gte: thirtyDaysAgo } } }),
+      prisma.project.count({ where: { createdAt: { gte: thirtyDaysAgo } } })
     ])
-    recentUsers = await prisma.user.findMany({ orderBy: { createdAt: 'desc' }, take: 10 })
-  } catch {}
+    
+    // Fetch recent users and projects to build a unified activity feed
+    const [recentUsers, recentProjects] = await Promise.all([
+      prisma.user.findMany({ orderBy: { createdAt: 'desc' }, take: 5, select: { id: true, fullName: true, role: true, createdAt: true } }),
+      prisma.project.findMany({ orderBy: { createdAt: 'desc' }, take: 5, select: { id: true, title: true, createdAt: true, client: { select: { user: { select: { fullName: true } } } } } })
+    ])
+
+    recentActivity = [
+      ...recentUsers.map(u => ({ id: `u-${u.id}`, icon: u.role === 'architect' ? '🏛️' : '👤', text: `New ${u.role} registered: ${u.fullName}`, date: u.createdAt })),
+      ...recentProjects.map(p => ({ id: `p-${p.id}`, icon: '📁', text: `New project posted: ${p.title} by ${p.client?.user?.fullName || 'Unknown'}`, date: p.createdAt }))
+    ].sort((a, b) => b.date - a.date).slice(0, 8)
+    
+  } catch (err) {
+    console.error('Error loading dashboard stats:', err)
+  }
+
+  const userGrowth = userCount > 0 ? ((usersLastMonth / userCount) * 100).toFixed(1) : 0;
+  const projectGrowth = projectCount > 0 ? ((projectsLastMonth / projectCount) * 100).toFixed(1) : 0;
 
   const stats = [
-    { icon: '👥', num: userCount, label: 'Total Users', color: '#6ee7b7' },
-    { icon: '🏛️', num: architectCount, label: 'Architects', color: '#a5b4fc' },
-    { icon: '📁', num: projectCount, label: 'Projects Posted', color: '#67e8f9' },
-    { icon: '⏳', num: pendingVerifications, label: 'Pending Reviews', color: pendingVerifications > 0 ? '#f87171' : '#fcd34d', alert: pendingVerifications > 0 },
+    { icon: '👥', num: userCount, label: 'Total Users', color: '#6ee7b7', trend: `+${userGrowth}% this month` },
+    { icon: '🏛️', num: architectCount, label: 'Architects', color: '#a5b4fc', trend: '' },
+    { icon: '📁', num: projectCount, label: 'Projects Posted', color: '#67e8f9', trend: `+${projectGrowth}% this month` },
+    { icon: '⏳', num: pendingVerifications, label: 'Pending Reviews', color: pendingVerifications > 0 ? '#f87171' : '#fcd34d', alert: pendingVerifications > 0, trend: 'Requires attention' },
   ]
 
   const quickActions = [
+    { href: '/admin/broadcasts', icon: '📢', label: 'Send Broadcast', desc: 'Notify users globally' },
+    { href: '/admin/projects', icon: '📁', label: 'Project Oversight', desc: 'Monitor active projects' },
     { href: '/admin/verifications', icon: '🛡️', label: 'Review Verifications', desc: `${pendingVerifications} pending` },
-    { href: '/admin/users', icon: '👥', label: 'Manage Users', desc: `${userCount} total users` },
-    { href: '/admin/settings', icon: '⚙️', label: 'Platform Settings', desc: 'Fees & config' },
   ]
 
   return (
     <div style={{ color: 'white' }}>
       <h1 style={{ fontSize: '1.5rem', fontWeight: 900, marginBottom: '4px', color: 'white' }}>Platform Overview</h1>
       <p style={{ color: '#7c8db5', fontSize: '0.9rem', marginBottom: '28px' }}>
-        Real-time stats and activity across ArchiConnect NG.
+        Advanced real-time analytics and platform activity.
       </p>
 
       {/* Alert banner */}
@@ -74,64 +98,47 @@ export default async function AdminDashboard() {
           <div key={s.label} style={{ background: '#1a1d27', border: s.alert ? '1px solid rgba(248,113,113,0.3)' : '1px solid rgba(255,255,255,0.06)', borderRadius: '14px', padding: '22px 20px', borderLeft: s.alert ? '3px solid #f87171' : '3px solid rgba(212,175,55,0.3)' }}>
             <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{s.icon}</div>
             <div style={{ fontSize: '2rem', fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.num}</div>
-            <div style={{ fontSize: '0.82rem', color: '#7c8db5', marginTop: '6px' }}>{s.label}</div>
+            <div style={{ fontSize: '0.82rem', color: 'white', marginTop: '6px', fontWeight: 700 }}>{s.label}</div>
+            {s.trend && <div style={{ fontSize: '0.75rem', color: s.alert ? '#fca5a5' : '#10b981', marginTop: '4px', fontWeight: 600 }}>{s.trend}</div>}
           </div>
         ))}
       </div>
 
-      {/* Quick actions */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '12px', marginBottom: '28px' }} className="admin-quick-grid">
-        {quickActions.map(a => (
-          <Link key={a.href} href={a.href} style={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '20px', textDecoration: 'none', display: 'block' }}>
-            <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>{a.icon}</div>
-            <div style={{ fontWeight: 800, color: 'white', fontSize: '0.9rem', marginBottom: '3px' }}>{a.label}</div>
-            <div style={{ color: '#7c8db5', fontSize: '0.8rem' }}>{a.desc}</div>
-          </Link>
-        ))}
-      </div>
-
-      {/* Recent users table */}
-      <div style={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '14px', overflow: 'hidden' }}>
-        <div style={{ padding: '16px 22px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontWeight: 800, color: 'white', fontSize: '0.95rem' }}>Recent Registrations</span>
-          <Link href="/admin/users" style={{ color: '#d4af37', fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none' }}>View All →</Link>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }} className="admin-main-grid">
+        {/* Left Column */}
+        <div>
+          {/* Quick actions */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '12px', marginBottom: '28px' }} className="admin-quick-grid">
+            {quickActions.map(a => (
+              <Link key={a.href} href={a.href} style={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '20px', textDecoration: 'none', display: 'block', transition: '0.2s' }} className="hover-glass">
+                <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>{a.icon}</div>
+                <div style={{ fontWeight: 800, color: 'white', fontSize: '0.9rem', marginBottom: '3px' }}>{a.label}</div>
+                <div style={{ color: '#7c8db5', fontSize: '0.8rem' }}>{a.desc}</div>
+              </Link>
+            ))}
+          </div>
         </div>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                {['Name', 'Email', 'Role', 'Verified', 'Joined'].map(h => (
-                  <th key={h} style={{ padding: '12px 20px', textAlign: 'left', fontSize: '0.72rem', fontWeight: 700, color: '#7c8db5', textTransform: 'uppercase', letterSpacing: '0.06em', borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}>
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {recentUsers.map(u => (
-                <tr key={u.id}>
-                  <td style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                    <strong style={{ color: 'white', fontSize: '0.88rem' }}>{u.fullName}</strong>
-                  </td>
-                  <td style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)', color: '#c5cde8', fontSize: '0.82rem' }}>{u.email}</td>
-                  <td style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                    <Badge type={u.role} label={u.role} />
-                  </td>
-                  <td style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                    {u.isVerified ? <Badge type="verified" label="✔ Yes" /> : <Badge type="pending" label="Pending" />}
-                  </td>
-                  <td style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)', color: '#7c8db5', fontSize: '0.8rem' }}>
-                    {new Date(u.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
+        
+        {/* Right Column: Activity Feed */}
+        <div style={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '14px', padding: '20px' }}>
+          <h3 style={{ fontSize: '1rem', fontWeight: 800, color: 'white', marginBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '12px' }}>Recent Activity</h3>
+          {recentActivity.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {recentActivity.map(item => (
+                <div key={item.id} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', paddingBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+                  <div style={{ background: 'rgba(255,255,255,0.05)', padding: '8px', borderRadius: '8px', fontSize: '1.2rem', lineHeight: 1 }}>
+                    {item.icon}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.85rem', color: '#c5cde8', lineHeight: 1.4, marginBottom: '4px' }}>{item.text}</div>
+                    <div style={{ fontSize: '0.7rem', color: '#7c8db5', fontWeight: 600 }}>{new Date(item.date).toLocaleString()}</div>
+                  </div>
+                </div>
               ))}
-              {recentUsers.length === 0 && (
-                <tr>
-                  <td colSpan={5} style={{ padding: '40px', textAlign: 'center', color: '#7c8db5' }}>No users yet</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+            </div>
+          ) : (
+            <p style={{ color: '#7c8db5', fontSize: '0.85rem' }}>No recent activity to display.</p>
+          )}
         </div>
       </div>
     </div>

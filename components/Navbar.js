@@ -104,7 +104,9 @@ export default function Navbar() {
               <Link href="/admin/dashboard" className="sidebar-link" onClick={() => setSidebarOpen(false)}>📊 Overview</Link>
               <Link href="/admin/verifications" className="sidebar-link" onClick={() => setSidebarOpen(false)}>🛡️ Verifications</Link>
               <Link href="/admin/users" className="sidebar-link" onClick={() => setSidebarOpen(false)}>👥 Manage Users</Link>
+              <Link href="/admin/projects" className="sidebar-link" onClick={() => setSidebarOpen(false)}>📁 Projects Oversight</Link>
               <Link href="/admin/transactions" className="sidebar-link" onClick={() => setSidebarOpen(false)}>💳 Transactions</Link>
+              <Link href="/admin/broadcasts" className="sidebar-link" onClick={() => setSidebarOpen(false)}>📢 Broadcasts</Link>
               <Link href="/admin/settings" className="sidebar-link" onClick={() => setSidebarOpen(false)}>⚙️ Settings</Link>
               <div className="menu-divider" />
               <Link href="/" className="sidebar-link" style={{ color: '#888' }} onClick={() => setSidebarOpen(false)}>↗ View Public Site</Link>
