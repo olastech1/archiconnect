@@ -71,8 +71,8 @@ export default async function AdminTransactionsPage() {
                   const revenue = c.totalAmount * (feeRate / 100)
                   return (
                     <tr key={c.id}>
-                      <td style={S.td}><strong style={{ color: 'white' }}>{c.project.title}</strong></td>
-                      <td style={S.td}>{c.architect.user.fullName}</td>
+                      <td style={S.td}><strong style={{ color: 'white' }}>{c.project?.title || 'Unknown'}</strong></td>
+                      <td style={S.td}>{c.architect?.user?.fullName || 'Unknown'}</td>
                       <td style={S.td}>
                         <span style={{ 
                           padding: '3px 10px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700,

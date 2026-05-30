@@ -49,12 +49,12 @@ export default async function AdminVerificationsPage() {
               <tbody>
                 {pending.map(p => (
                   <tr key={p.id}>
-                    <td style={S.td}><strong style={{ color: 'white' }}>{p.user.fullName}</strong></td>
-                    <td style={{ ...S.td, fontSize: '0.82rem' }}>{p.user.email}</td>
+                    <td style={S.td}><strong style={{ color: 'white' }}>{p.user?.fullName || 'Unknown'}</strong></td>
+                    <td style={{ ...S.td, fontSize: '0.82rem' }}>{p.user?.email || 'N/A'}</td>
                     <td style={S.td}>{p.arconNumber ? <span style={{ color: '#d4af37', fontWeight: 700, fontFamily: 'monospace' }}>{p.arconNumber}</span> : <span style={{ color: '#4a5568' }}>—</span>}</td>
                     <td style={S.td}>{p.niaNumber || <span style={{ color: '#4a5568' }}>—</span>}</td>
                     <td style={{ ...S.td, fontSize: '0.82rem' }}>{p.state || '—'}</td>
-                    <td style={{ ...S.td, fontSize: '0.8rem', color: '#7c8db5' }}>{new Date(p.user.createdAt).toLocaleDateString()}</td>
+                    <td style={{ ...S.td, fontSize: '0.8rem', color: '#7c8db5' }}>{p.user?.createdAt ? new Date(p.user.createdAt).toLocaleDateString() : '—'}</td>
                     <td style={S.td}><AdminVerifyActions profileId={p.id} /></td>
                   </tr>
                 ))}
@@ -88,8 +88,8 @@ export default async function AdminVerificationsPage() {
               <tbody>
                 {verified.map(p => (
                   <tr key={p.id}>
-                    <td style={S.td}><strong style={{ color: 'white' }}>{p.user.fullName}</strong></td>
-                    <td style={{ ...S.td, fontSize: '0.82rem' }}>{p.user.email}</td>
+                    <td style={S.td}><strong style={{ color: 'white' }}>{p.user?.fullName || 'Unknown'}</strong></td>
+                    <td style={{ ...S.td, fontSize: '0.82rem' }}>{p.user?.email || 'N/A'}</td>
                     <td style={S.td}><span style={{ color: '#d4af37', fontWeight: 700, fontFamily: 'monospace', fontSize: '0.82rem' }}>{p.arconNumber || '—'}</span></td>
                     <td style={{ ...S.td, fontSize: '0.82rem' }}>{p.niaNumber || '—'}</td>
                     <td style={{ ...S.td, fontSize: '0.82rem' }}>{p.state || '—'}</td>
